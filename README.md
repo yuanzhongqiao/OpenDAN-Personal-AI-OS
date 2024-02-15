@@ -4,234 +4,279 @@
 [![GitHub Repo stars](https://img.shields.io/github/stars/fiatrete/OpenDAN-Personal-AI-OS?style=social)](https://github.com/fiatrete/OpenDAN-Personal-AI-OS/stargazers)
 [![Twitter Follow](https://img.shields.io/twitter/follow/openDAN_AI?style=social)](https://twitter.com/openDAN_AI)
 
-OpenDAN is an open source Personal AI OS , which consolidates various AI modules in one place for your personal use.
-
-## **Project Introduction**
-
-OpenDAN (Open and Do Anything Now with AI) is revolutionizing the AI landscape with its Personal AI Operating System. Designed for seamless integration of diverse AI modules, it ensures unmatched interoperability. OpenDAN empowers users to craft powerful AI agents—from butlers and assistants to personal tutors and digital companions—all while retaining control. These agents can team up to tackle complex challenges, integrate with existing services, and command smart(IoT) devices.
-
-With OpenDAN, we're putting AI in your hands, making life simpler and smarter.
-
-This project is still in its very early stages, and there may be significant changes in the future.
-
-## **Updates**
-
-After over three months of development, the code for the first version of OpenDAN MVP (0.5.1), driven by the new contributor `waterflier`, has been merged into the Master branch. This version has realized many concepts proposed in the PoC version of OpenDAN and completed the basic framework of the OS, especially defining the application form on AIOS. Currently, the 0.5.1 version operates in an "all-in-one" mode. For 0.5.2, we will advance the formal implementation of the OpenDAN OS kernel based on the partial framework code of the [CYFS Owner Online Device(OOD) OS](https://github.com/buckyos/CYFS) that has already been completed.
-
-![MVP](./doc/res/mvp.png)
-
-**The main new features of OpenDAN 0.5.1 (MVP) :**
-
-- [x] Rapid installation and deployment of OpenDAN based on Docker, making OpenDAN compatible with a wide range of hardware environments (PC/Mac/RaspberryPI/NAS) through Docker.
-- [x] AI Agent's large language model can be switched, now supporting locally running the open-source model (LLaMa).
-- [x] Introduction of more built-in AI Agents:
-    - [x] Personal Assistant Jarvis : Consultant.Assistant who anages your schedule and communication records. ChatGPT alternative.
-    - [x] Information Assistant Mia : Manage your personal data and sort it into a knowledge base
-    - [x] Private English Teacher Tracy : Your private English teacher
-    - [x] ai_bash (for developers) :No longer need to memory complicated command line parameters! Bash is used by "Find FILES in ~/Documents that Contain OpenDAN".
-- [x] Connectivity to AI Agent/Workflow via Telegram/Email.
-- [x] Building a local private Knowledge Base based on existing file or email spiders, enabling AI Agent access to personal data.
-    - [x] Supports text files and common image formats.
-    - [ ] Supports other common formats.
-- [x] Implemented Workflow: Collaboration of Agents to solve more complex issues.
-    - [x] Built-in Workflow story_maker, integrated the AIGC tool to create audio fairy tale books.
-- [x] Distributed AI computing core available for complex selections.
-- [x] Manual download and installation of new Agent/Workflow.
-- [ ] OpenDAN Store : Agent/Workflow/Models One-Stop installation  (Delayed to 0.5.2).
-
-[Try it NOW!](./doc/QuickStart.md)
-
-Developers [click here](https://github.com/fiatrete/OpenDAN-Personal-AI-OS/issues/46) to learn about OpenDan's system development updates.
-
-## **Intro video - What is OpenDAN?**
-
-Click the image below for a demo:
-
-[![Intro Video](https://github-production-user-asset-6210df.s3.amazonaws.com/126534313/243310994-4d1ece51-b06d-413d-a2ac-ea5099bb6e94.png)](https://www.youtube.com/watch?v=l2QmsIOXhdQ "Intro Video")
-
-## **Subscribe to updates here**
-
-<https://twitter.com/openDAN_AI>
-
-## **Installation**
-
-There are two ways to install the Internal Test Version of OpenDAN:
-
-1. Installation through docker, this is also the installation method we recommend now
-2. Installing through the source code, this method may encounter some traditional Python dependence problems and requires you to have a certain ability to solve.But if you want to do secondary development of OpenDAN, this method is necessary.
-
-### Preparation before installation
-
-1. Docker environment
-This article does not introduce how to install the docker, execute it under your console
-
-```
-docker -version
-```
-
-If you can see the docker version number (> 20.0), it means that you have installed Docker.
-If you don't know how to install docker, you can refer to [here](https://docs.docker.com/engine/install/)
-
-2. OpenAI API Token
-If there is no api token, you can apply for [here](https://beta.openai.com/)
-
-Applying for the API Token may have some thresholds for new players. You can find friends around you, and he can give you a temporary, or join our internal test experience group. We will also release some free experience API token from time to time.These token is limited to the maximum consumption and effective time
-
-### Install
-
-After executing the following command, you can install the Docker Image of OpenDAN
-
-```
-docker pull paios/aios:latest
-```
-
-## **Run OpenDAN**
-
-The first Run of OpenDAN needs to be initialized. You need to enter some information in the process of initialization. Therefore, when starting the docker, remember to bring the -it parameter.
-
-OpenDAN is your Personal AIOS, so it will generate some important personal data (such as chat history with agent, schedule data, etc.) during its operation. These data will be stored on your local disk. ThereforeWe recommend that you mount the local disk into the container of Docker so that the data can be guaranteed.
-
-```
-docker run -v /your/local/myai/:/root/myai --name aios -it paios/aios:latest 
-```
-
-In the above command, we also set up a Docker instance for Docker Run named AIOS, which is convenient for subsequent operations.You can also use your favorite name instead.
-
-After the first operation of the docker instance is created, it only needs to be executed again:
-
-```
-docker start -ai aios
-```
-
-If you plan to run in a service mode (NO UI), you don't need to bring the -AI parameter:
-
-```
-docker start aios
-```
-
-### Hello, Jarvis
-
-After the configuration is completed, you will enter a AIOS Shell, which is similar to Linux Bash and similar. The meaning of this interface is:
-The current user "username" is communicating with the name "Agent/Workflow of Jarvis". The current topic is default.
-
-Say Hello to your private AI assistant Jarvis !
-
-**If everything is OK, you will get a reply from Jarvis after a moment .At this time, the OpenDAN system is running .**
-![MVP](./doc/res/jarvis.png)
-
-## **Core Concepts and Features of OpenDAN**
-1. **AI Agent**: Driven by a large language model, having own memory.The AI Agent completes tasks through natural language interaction.
-2. **AI Workflow**: Organize different AI Agents into an AI Agent Group to complete complex tasks.
-![workflow](./doc/res/workflow.png)
-3. **AI Environment**: Supports AI Agents to access file systems, IoT devices, network services, smart contracts, and everything on today's internet once authorized.
-4. **AI Marketplace**: Offer a solution for one-click installation and use of various AI applications, helping users easily access and manage AI apps.
-5. **AI Model Solution**: Provide a unified entry point for model search, download, and access control, making it convenient for users to find and use models suitable for their needs.
-6. **Hardware-specific optimization**: Optimize for specific hardware to enable smooth local running of most open-source AI applications.
-7. **Strict Privacy Protection and Management**: Strictly manage personal data, ranging from family albums to chat records and social media records, and provide a unified access control interface for AI applications.
-8. **Personal knowledge Base**:
-9. **Integrated AIGC Workflow**: Offer AIGC Agent/Workflow for users to train their own voice models, Lora models, knowledge models, etc., using personal data. Based on these private model data, integrate the most advanced AIGC algorithm to help people release creativity easily and build more COOL and more personalized content.
-10. **Development Framework**: Provide a development framework for customizing AI assistants for specific purposes, making it easy for developers to create unique AI applications / service for their customers.
-
-## **Deeply Understanding OpenDAN**
-
-### Build OpenDAN from source code
-1. Install the latest version of python (>= 3.11) and pip
-1. Clone the source code
-   ```
-   git clone https://github.com/fiatrete/OpenDAN-Personal-AI-OS.git
-   cd OpenDAN-Personal-AI-OS
-   ```
-1. Enable virtual env
-   ```
-   virtualenv venv
-   source ./venv/bin/activate
-   ```
-1. Install the dependent python library
-   ```
-   pip install -r ./src/requirements.txt
-   ```
-   Waiting for installation.
-1. Start OpenDAN through aios_shell
-   ```
-   python ./src/srvice/aios_shell/aios_shell.py
-   ```
-   1. If seeing error saying `No ffmpeg exe could be found`, you need to install it manually from https://www.ffmpeg.org/
-      
-Now OpenDAN runs in the development mode, and the directory is:
-- AIOS_ROOT: ./rootfs (/opt/aios in docker)
-- AIOS_MYAI: ~/myai (/root/myai in docer)
-
-### OpenDAN Cookbook
-
-#### Chapter 1: Hello, Jarvis! 
-- 1.1 Installation of OpenDAN
-- 1.2 Initial Configuration of OpenDAN
-- 1.3 Introduction to Agent and Using Jarvis
-- 1.4 Communicating with Jarvis Anytime and Anywhere via Telegram and Email
-- 1.5 Using Jarvis in Daily Life
-- 1.6 Mia and the Knowledge Base
-- 1.7 Introduction to Other Built-in Agents
-
-[Click to Read](./doc/QuickStart.md)
-
-#### Chapter 2: AIGC Workflow （Coming Soon）
-Using Workflow to activate the AIGC feature and let the Agent team (director, artist, and narrator) collaborate to create a unique bedtime story for your child based on your instructions!
-
-- 2.1 Using Workflow `story_maker`
-- 2.2 Enabling Your Own AIGC Computation Node
-- 2.3 Training and Using Your Own AIGC LoRA Model.
-
-#### Chapter 3: Develop Agent/Workflow on OpenDAN (Writing)
-
-What's the most crucial design aspect of an operating system? Defining new forms of applications!
-
-This article will systematically introduce what future Intelligence Applications look like, how to develop and release Intelligence Applications, and how to connect new-age Intelligence Applications with traditional computing.
-
-- 3.1 Developing Agents that Run on OpenDAN
-- 3.2 Developing Workflows that Run on OpenDAN
-- 3.3 Extending the Environments Accessible by Agents
-- 3.4 Releasing Various Models Trained by Yourself
-- 3.5 Expanding More Tunnels to Enhance the Accessibility of Agents/Workflow
-- 3.6 Developing Traditional dApps on the Personal Server.
-
-#### Chapter 4: OpenDAN Kernel Development (Writing)
-This article will introduce the design and implementation of OpenDAN's architecture
-
-![architecture](./doc/res/design.png)
-
-
-- 4.1 Integrate your own LLM core into OpenDAN.
-- 4.2 Knowledge Base: Expand more file types, allowing Agents to better understand your knowledge graph.
-- 4.3 AI computation engine, integrating more AIGC capabilities, and accessing more computational power.
-- 4.4 OpenDAN's state management: File system and vector database.
-- 4.5 Kernel services and permission isolation.
-- 4.6 Smart gateway.
-
-
-## **Upcoming Roadmap**
-
-- [x] Release PoC of OpenDAN
-- [x] **0.5.1** Implement personal data embeding to Knownlege-Base(KB) via Spider, followed by access by AI Agent
-- [ ] 0.5.2 Separate user mode and kernel mode, Knowledge Base supports scene format and more Spiders, supports personal AIGC model training
-- [ ] 0.5.3 Release Home Environment, allowing Agents to access and control your home's IoT devices
-- [ ] 0.5.x Official version of OpenDAN Alpha. Release OpenDAN SDK 1.0.
-
-## **Contributing**
-
-We welcome community members to contribute to the project, including but not limited to submitting issues, improving documentation, fixing bugs, or providing new features. You can participate in the contribution through the following ways:
-
-- Submit an Issue in the GitHub repository
-- Submit a Pull Request to the repository
-- Participate in discussions and development
-
-OpenDAN utilizes the SourceDAO smart contract to incentivize the community. Developers who contribute can receive rewards in the form of OpenDAN DAO Tokens. DAO Token holders can collaboratively determine the development direction of OpenDAN. You can learn more about the rules of SourceDAO by reading this article（ https://github.com/fiatrete/OpenDAN-Personal-AI-OS/issues/25 ）
-
-The DAO governance page for OpenDAN is under development. Once officially launched, all contributors will receive DAO Tokens according to the rules.
-
-## **⭐Star History**
-
-[![Star History Chart](https://api.star-history.com/svg?repos=fiatrete/OpenDAN-Personal-AI-Server-OS&type=Date)](https://star-history.com/#fiatrete/OpenDAN-Personal-AI-Server-OS&Date)
-
-## **License**
-
-The current license is MIT, but it will transition to SourceDAO in the future.
+<div class="Box-sc-g0xbh4-0 bJMeLZ js-snippet-clipboard-copy-unpositioned" data-hpc="true"><article class="markdown-body entry-content container-lg" itemprop="text"><h1 tabindex="-1" dir="auto"><a id="user-content-opendan--your-personal-aios" class="anchor" aria-hidden="true" tabindex="-1" href="#opendan--your-personal-aios"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenDAN：您的个人 AIOS</font></font></strong></h1>
+<p dir="auto"><a href="https://opendan.ai" rel="nofollow"><img src="https://camo.githubusercontent.com/2213859c3e94c5ff5944da1af86806ed0bb280fa4f9a4a4769d7d80a36264858/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4f6666696369616c253230576562736974652d6f70656e64616e2e61692d626c75653f7374796c653d666c6174266c6f676f3d776f726c64266c6f676f436f6c6f723d7768697465" alt="官方网站" data-canonical-src="https://img.shields.io/badge/Official%20Website-opendan.ai-blue?style=flat&amp;logo=world&amp;logoColor=white" style="max-width: 100%;"></a>
+<a href="https://github.com/fiatrete/OpenDAN-Personal-AI-OS/stargazers"><img src="https://camo.githubusercontent.com/001a60634ee3533b33adf31a5738120bf5dc571cc61ddc1390246b397e860e22/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f73746172732f66696174726574652f4f70656e44414e2d506572736f6e616c2d41492d4f533f7374796c653d736f6369616c" alt="GitHub 存储库星星" data-canonical-src="https://img.shields.io/github/stars/fiatrete/OpenDAN-Personal-AI-OS?style=social" style="max-width: 100%;"></a>
+<a href="https://twitter.com/openDAN_AI" rel="nofollow"><img src="https://camo.githubusercontent.com/06500e4685963f2d916c0eae8aa7ec13c0ca662393ab1a4e7c2afccf346ce311/68747470733a2f2f696d672e736869656c64732e696f2f747769747465722f666f6c6c6f772f6f70656e44414e5f41493f7374796c653d736f6369616c" alt="推特关注" data-canonical-src="https://img.shields.io/twitter/follow/openDAN_AI?style=social" style="max-width: 100%;"></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenDAN 是一款开源个人人工智能操作系统，它将各种人工智能模块整合到一个地方供您个人使用。</font></font></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-project-introduction" class="anchor" aria-hidden="true" tabindex="-1" href="#project-introduction"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">项目介绍</font></font></strong></h2>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenDAN（Open and Do Anything Now with AI）正在通过其个人人工智能操作系统彻底改变人工智能领域。它专为无缝集成不同的人工智能模块而设计，确保无与伦比的互操作性。 OpenDAN 使用户能够打造强大的人工智能代理（从管家和助理到私人导师和数字伴侣），同时保留控制权。这些代理可以组队应对复杂的挑战、与现有服务集成并指挥智能 (IoT) 设备。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">借助 OpenDAN，我们将 AI 交到您手中，让生活变得更简单、更智能。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">该项目仍处于早期阶段，未来可能会发生重大变化。</font></font></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-updates" class="anchor" aria-hidden="true" tabindex="-1" href="#updates"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">更新</font></font></strong></h2>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">经过三个多月的开发，由新贡献者驱动的 OpenDAN MVP (0.5.1) 第一个版本的代码</font></font><code>waterflier</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">已合并到 Master 分支中。该版本实现了OpenDAN PoC版本中提出的许多概念，完成了操作系统的基本框架，特别是定义了AIOS上的应用形式。目前，0.5.1版本以“一体式”模式运行。对于0.5.2，我们将基于</font><font style="vertical-align: inherit;">已经完成的</font></font><a href="https://github.com/buckyos/CYFS"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">CYFS Owner Online Device（OOD）操作系统的部分框架代码，推进OpenDAN操作系统内核的正式实现。</font></font></a><font style="vertical-align: inherit;"></font></p>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/fiatrete/OpenDAN-Personal-AI-OS/blob/main/doc/res/mvp.png"><img src="/fiatrete/OpenDAN-Personal-AI-OS/raw/main/doc/res/mvp.png" alt="MVP" style="max-width: 100%;"></a></p>
+<p dir="auto"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenDAN 0.5.1（MVP）的主要新特性：</font></font></strong></p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">基于Docker快速安装和部署OpenDAN，使OpenDAN通过Docker兼容多种硬件环境（PC/Mac/RaspberryPI/NAS）。</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">AI Agent的大语言模型可以切换，现在支持本地运行开源模型（LLaMa）。</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">引入更多内置AI Agent：
+</font></font><ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">个人助理贾维斯：顾问。管理您的日程安排和沟通记录的助理。 ChatGPT 替代方案。</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">信息助理 Mia：管理您的个人数据并将其分类到知识库中</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">私人英语老师 Tracy : 您的私人英语老师</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ai_bash（针对开发者）：不再需要记忆复杂的命令行参数！ Bash 由“在 ~/Documents 中查找包含 OpenDAN 的文件”使用。</font></font></li>
+</ul>
+</li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通过电报/电子邮件连接到人工智能代理/工作流程。</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">基于现有文件或电子邮件蜘蛛构建本地私有知识库，使 AI Agent 能够访问个人数据。
+</font></font><ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">支持文本文件和常见图像格式。</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">支持其他常见格式。</font></font></li>
+</ul>
+</li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">实施的工作流程：代理协作解决更复杂的问题。
+</font></font><ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">内置工作流程story_maker，集成AIGC工具制作有声童话书。</font></font></li>
+</ul>
+</li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">分布式AI计算核心，可供复杂选择。</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">手动下载并安装新的代理/工作流程。</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenDAN Store：代理/工作流程/模型一站式安装（延迟到0.5.2）。</font></font></li>
+</ul>
+<p dir="auto"><a href="/fiatrete/OpenDAN-Personal-AI-OS/blob/main/doc/QuickStart.md"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">现在就试试！</font></font></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">开发者</font></font><a href="https://github.com/fiatrete/OpenDAN-Personal-AI-OS/issues/46" data-hovercard-type="issue" data-hovercard-url="/fiatrete/OpenDAN-Personal-AI-OS/issues/46/hovercard"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">点击这里</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">了解OpenDan的系统开发更新。</font></font></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-intro-video---what-is-opendan" class="anchor" aria-hidden="true" tabindex="-1" href="#intro-video---what-is-opendan"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">介绍视频 - 什么是 OpenDAN？</font></font></strong></h2>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">点击下图查看演示：</font></font></p>
+<p dir="auto"><a href="https://www.youtube.com/watch?v=l2QmsIOXhdQ" title="介绍视频" rel="nofollow"><img src="https://camo.githubusercontent.com/84126909bf46fc12ee997d373daa96040f3a90636d87f2daf1e60b23b5d56c1e/68747470733a2f2f6769746875622d70726f64756374696f6e2d757365722d61737365742d3632313064662e73332e616d617a6f6e6177732e636f6d2f3132363533343331332f3234333331303939342d34643165636535312d623036642d343133642d613261632d6561353039396262366539342e706e67" alt="介绍视频" data-canonical-src="https://github-production-user-asset-6210df.s3.amazonaws.com/126534313/243310994-4d1ece51-b06d-413d-a2ac-ea5099bb6e94.png" style="max-width: 100%;"></a></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-subscribe-to-updates-here" class="anchor" aria-hidden="true" tabindex="-1" href="#subscribe-to-updates-here"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在这里订阅更新</font></font></strong></h2>
+<p dir="auto"><a href="https://twitter.com/openDAN_AI" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://twitter.com/openDAN_AI</font></font></a></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-installation" class="anchor" aria-hidden="true" tabindex="-1" href="#installation"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装</font></font></strong></h2>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">有两种方法安装 OpenDAN 内部测试版本：</font></font></p>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通过docker安装，这也是我们现在推荐的安装方式</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通过源码安装，这种方法可能会遇到一些传统的Python依赖问题，需要你有一定的能力来解决。但是如果你想做OpenDAN的二次开发，这个方法是必要的。</font></font></li>
+</ol>
+<h3 tabindex="-1" dir="auto"><a id="user-content-preparation-before-installation" class="anchor" aria-hidden="true" tabindex="-1" href="#preparation-before-installation"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装前的准备工作</font></font></h3>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Docker环境本文不介绍如何安装docker，在你的控制台下执行</font></font></li>
+</ol>
+<div class="snippet-clipboard-content notranslate position-relative overflow-auto"><pre class="notranslate"><code>docker -version
+</code></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="docker -version" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果你能看到docker版本号（&gt;20.0），就说明你已经安装了Docker。如果你不知道如何安装docker，可以参考</font></font><a href="https://docs.docker.com/engine/install/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">这里</font></font></a></p>
+<ol start="2" dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenAI API Token 如果没有api token，您可以</font></font><a href="https://beta.openai.com/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在这里申请</font></font></a></li>
+</ol>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">对于新玩家来说，申请API Token可能有一些门槛。你可以找你身边的朋友，他可以给你一个临时的，或者加入我们的内测体验群。我们还会不定期的释放一些免费体验的API token。这些token有最大消耗和有效时间限制</font></font></p>
+<h3 tabindex="-1" dir="auto"><a id="user-content-install" class="anchor" aria-hidden="true" tabindex="-1" href="#install"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装</font></font></h3>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">执行以下命令后即可安装OpenDAN的Docker Image</font></font></p>
+<div class="snippet-clipboard-content notranslate position-relative overflow-auto"><pre class="notranslate"><code>docker pull paios/aios:latest
+</code></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="docker pull paios/aios:latest" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<h2 tabindex="-1" dir="auto"><a id="user-content-run-opendan" class="anchor" aria-hidden="true" tabindex="-1" href="#run-opendan"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">运行 OpenDAN</font></font></strong></h2>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenDAN 的第一次运行需要初始化。初始化过程中需要输入一些信息。因此，启动docker时，记得带上-it参数。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenDAN 是您的个人 AIOS，因此它在运行过程中会生成一些重要的个人数据（例如与代理的聊天记录、日程数据等）。这些数据将存储在您的本地磁盘上。因此我们建议您将本地磁盘挂载到Docker的容器中，这样数据才能得到保证。</font></font></p>
+<div class="snippet-clipboard-content notranslate position-relative overflow-auto"><pre class="notranslate"><code>docker run -v /your/local/myai/:/root/myai --name aios -it paios/aios:latest 
+</code></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="docker run -v /your/local/myai/:/root/myai --name aios -it paios/aios:latest " tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在上面的命令中，我们还为 Docker Run 设置了一个 Docker 实例，名为 AIOS，方便后续操作。您也可以使用自己喜欢的名称来代替。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">docker实例的第一次操作创建完成后，只需要再次执行即可：</font></font></p>
+<div class="snippet-clipboard-content notranslate position-relative overflow-auto"><pre class="notranslate"><code>docker start -ai aios
+</code></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="docker start -ai aios" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果你打算以服务模式（NO UI）运行，则不需要带上-AI参数：</font></font></p>
+<div class="snippet-clipboard-content notranslate position-relative overflow-auto"><pre class="notranslate"><code>docker start aios
+</code></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="docker start aios" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<h3 tabindex="-1" dir="auto"><a id="user-content-hello-jarvis" class="anchor" aria-hidden="true" tabindex="-1" href="#hello-jarvis"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">你好，贾维斯</font></font></h3>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">配置完成后，会进入一个AIOS Shell，与Linux Bash类似。该界面的含义是：当前用户“用户名”正在与名称“Agent/Workflow of Jarvis”进行通信。当前主题为默认主题。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">向您的私人人工智能助理贾维斯问好！</font></font></p>
+<p dir="auto"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果一切正常，过一会儿你就会收到Jarvis的回复。此时，OpenDAN系统正在运行。</font></font></strong>
+<a target="_blank" rel="noopener noreferrer" href="/fiatrete/OpenDAN-Personal-AI-OS/blob/main/doc/res/jarvis.png"><img src="/fiatrete/OpenDAN-Personal-AI-OS/raw/main/doc/res/jarvis.png" alt="MVP" style="max-width: 100%;"></a></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-core-concepts-and-features-of-opendan" class="anchor" aria-hidden="true" tabindex="-1" href="#core-concepts-and-features-of-opendan"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenDAN的核心概念和特点</font></font></strong></h2>
+<ol dir="auto">
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">AI Agent</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：由大型语言模型驱动，拥有自己的记忆。AI Agent通过自然语言交互完成任务。</font></font></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">AI工作流程</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：将不同的AI Agent组织成AI Agent Group来完成复杂的任务。
+</font></font><a target="_blank" rel="noopener noreferrer" href="/fiatrete/OpenDAN-Personal-AI-OS/blob/main/doc/res/workflow.png"><img src="/fiatrete/OpenDAN-Personal-AI-OS/raw/main/doc/res/workflow.png" alt="工作流程" style="max-width: 100%;"></a></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">人工智能环境</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：支持人工智能代理在授权后访问文件系统、物联网设备、网络服务、智能合约以及当今互联网上的所有内容。</font></font></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">AI Marketplace</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：提供各类AI应用的一键安装和使用解决方案，帮助用户轻松访问和管理AI应用。</font></font></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">AI模型解决方案</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：提供统一的模型搜索、下载、访问控制入口，方便用户找到并使用适合自己需求的模型。</font></font></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">针对特定硬件的优化</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：针对特定硬件进行优化，使大多数开源AI应用能够在本地顺利运行。</font></font></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">严格的隐私保护和管理</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：严格管理从家庭相册到聊天记录、社交媒体记录等个人数据，并为AI应用提供统一的访问控制接口。</font></font></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">个人知识库</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：</font></font></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">集成AIGC工作流程</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：提供AIGC代理/工作流程，供用户使用个人数据训练自己的语音模型、Lora模型、知识模型等。基于这些私有模型数据，集成最先进的AIGC算法，帮助人们轻松释放创造力，构建更COOL、更个性化的内容。</font></font></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">开发框架</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：提供针对特定用途定制AI助手的开发框架，使开发人员可以轻松地为客户创建独特的AI应用/服务。</font></font></li>
+</ol>
+<h2 tabindex="-1" dir="auto"><a id="user-content-deeply-understanding-opendan" class="anchor" aria-hidden="true" tabindex="-1" href="#deeply-understanding-opendan"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">深入理解OpenDAN</font></font></strong></h2>
+<h3 tabindex="-1" dir="auto"><a id="user-content-build-opendan-from-source-code" class="anchor" aria-hidden="true" tabindex="-1" href="#build-opendan-from-source-code"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">从源代码构建 OpenDAN</font></font></h3>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装最新版本的 python (&gt;= 3.11) 和 pip</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">克隆源代码
+</font></font><div class="snippet-clipboard-content notranslate position-relative overflow-auto"><pre class="notranslate"><code>git clone https://github.com/fiatrete/OpenDAN-Personal-AI-OS.git
+cd OpenDAN-Personal-AI-OS
+</code></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="git clone https://github.com/fiatrete/OpenDAN-Personal-AI-OS.git
+cd OpenDAN-Personal-AI-OS" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+</li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">启用虚拟环境
+</font></font><div class="snippet-clipboard-content notranslate position-relative overflow-auto"><pre class="notranslate"><code>virtualenv venv
+source ./venv/bin/activate
+</code></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="virtualenv venv
+source ./venv/bin/activate" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+</li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装依赖的python库
+</font></font><div class="snippet-clipboard-content notranslate position-relative overflow-auto"><pre class="notranslate"><code>pip install -r ./src/requirements.txt
+</code></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="pip install -r ./src/requirements.txt" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+等待安装。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通过 aios_shell 启动 OpenDAN
+</font></font><div class="snippet-clipboard-content notranslate position-relative overflow-auto"><pre class="notranslate"><code>python ./src/srvice/aios_shell/aios_shell.py
+</code></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="python ./src/srvice/aios_shell/aios_shell.py" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果看到错误提示</font></font><code>No ffmpeg exe could be found</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，您需要从</font></font><a href="https://www.ffmpeg.org/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://www.ffmpeg.org/手动安装它</font></font></a></li>
+</ol>
+</li>
+</ol>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">现在OpenDAN运行在开发模式下，目录为：</font></font></p>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">AIOS_ROOT：./rootfs（docker 中的/opt/aios）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">AIOS_MYAI：~/myai（在 docer 中为 /root/myai）</font></font></li>
+</ul>
+<h3 tabindex="-1" dir="auto"><a id="user-content-opendan-cookbook" class="anchor" aria-hidden="true" tabindex="-1" href="#opendan-cookbook"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenDAN 食谱</font></font></h3>
+<h4 tabindex="-1" dir="auto"><a id="user-content-chapter-1-hello-jarvis" class="anchor" aria-hidden="true" tabindex="-1" href="#chapter-1-hello-jarvis"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">第一章：你好，贾维斯！</font></font></h4>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1.1 OpenDAN的安装</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1.2 OpenDAN的初始配置</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1.3 Agent介绍及Jarvis使用</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1.4 通过 Telegram 和 Email 随时随地与 Jarvis 沟通</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1.5 在日常生活中使用 Jarvis</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1.6 Mia 和知识库</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1.7 其他内置代理介绍</font></font></li>
+</ul>
+<p dir="auto"><a href="/fiatrete/OpenDAN-Personal-AI-OS/blob/main/doc/QuickStart.md"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">点击阅读</font></font></a></p>
+<h4 tabindex="-1" dir="auto"><a id="user-content-chapter-2-aigc-workflow-coming-soon" class="anchor" aria-hidden="true" tabindex="-1" href="#chapter-2-aigc-workflow-coming-soon"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">第2章：AIGC工作流程（即将推出）</font></font></h4>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用工作流程激活 AIGC 功能，让代理团队（导演、艺术家和旁白）协作根据您的指示为您的孩子创作独特的睡前故事！</font></font></p>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2.1 使用工作流程</font></font><code>story_maker</code></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2.2 启用您自己的AIGC计算节点</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2.3 训练和使用您自己的 AIGC LoRA 模型。</font></font></li>
+</ul>
+<h4 tabindex="-1" dir="auto"><a id="user-content-chapter-3-develop-agentworkflow-on-opendan-writing" class="anchor" aria-hidden="true" tabindex="-1" href="#chapter-3-develop-agentworkflow-on-opendan-writing"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">第 3 章：在 OpenDAN 上开发代理/工作流程（写作）</font></font></h4>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">操作系统最关键的设计方面是什么？定义新的应用形式！</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">本文将系统地介绍未来智能应用是什么样子，如何开发和发布智能应用，以及如何将新时代智能应用与传统计算连接起来。</font></font></p>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3.1 开发在 OpenDAN 上运行的代理</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3.2 开发在 OpenDAN 上运行的工作流程</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3.3 扩展代理可访问的环境</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3.4 发布自己训练的各种模型</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3.5 拓展更多隧道，增强坐席/工作流的可达性</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3.6 在个人服务器上开发传统 dApp。</font></font></li>
+</ul>
+<h4 tabindex="-1" dir="auto"><a id="user-content-chapter-4-opendan-kernel-development-writing" class="anchor" aria-hidden="true" tabindex="-1" href="#chapter-4-opendan-kernel-development-writing"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">第 4 章：OpenDAN 内核开发（写作）</font></font></h4>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">本文将介绍OpenDAN的架构设计与实现</font></font></p>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/fiatrete/OpenDAN-Personal-AI-OS/blob/main/doc/res/design.png"><img src="/fiatrete/OpenDAN-Personal-AI-OS/raw/main/doc/res/design.png" alt="建筑学" style="max-width: 100%;"></a></p>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4.1 将您自己的 LLM 核心集成到 OpenDAN 中。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4.2 知识库：拓展更多文件类型，让Agent更好地理解你的知识图谱。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4.3 AI计算引擎，集成更多AIGC能力，接入更多算力。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4.4 OpenDAN的状态管理：文件系统和矢量数据库。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4.5 内核服务和权限隔离。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4.6 智能网关。</font></font></li>
+</ul>
+<h2 tabindex="-1" dir="auto"><a id="user-content-upcoming-roadmap" class="anchor" aria-hidden="true" tabindex="-1" href="#upcoming-roadmap"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">即将推出的路线图</font></font></strong></h2>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">发布OpenDAN PoC</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> <strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">0.5.1</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通过Spider实现个人数据嵌入到Knowlege-Base(KB)，然后由AI Agent访问</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">0.5.2 用户态和内核态分离，知识库支持场景格式和更多Spiders，支持个人AIGC模型训练</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">0.5.3 发布家庭环境，允许Agent访问和控制您家的物联网设备</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenDAN Alpha 0.5.x 官方版本。发布 OpenDAN SDK 1.0。</font></font></li>
+</ul>
+<h2 tabindex="-1" dir="auto"><a id="user-content-contributing" class="anchor" aria-hidden="true" tabindex="-1" href="#contributing"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贡献</font></font></strong></h2>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们欢迎社区成员为该项目做出贡献，包括但不限于提交问题、改进文档、修复错误或提供新功能。您可以通过以下方式参与贡献：</font></font></p>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在 GitHub 存储库中提交问题</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">向存储库提交 Pull 请求</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">参与讨论和开发</font></font></li>
+</ul>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenDAN 利用 SourceDAO 智能合约来激励社区。做出贡献的开发者可以获得 OpenDAN DAO 代币形式的奖励。 DAO Token 持有者可以共同决定 OpenDAN 的发展方向。您可以通过阅读这篇文章了解更多关于SourceDAO的规则（</font></font><a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1792955719" data-permission-text="Title is private" data-url="https://github.com/fiatrete/OpenDAN-Personal-AI-OS/issues/25" data-hovercard-type="issue" data-hovercard-url="/fiatrete/OpenDAN-Personal-AI-OS/issues/25/hovercard" href="https://github.com/fiatrete/OpenDAN-Personal-AI-OS/issues/25"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">#25</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">）</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenDAN 的 DAO 治理页面正在开发中。一旦正式上线，所有贡献者都将按照规则获得 DAO 代币。</font></font></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-star-history" class="anchor" aria-hidden="true" tabindex="-1" href="#star-history"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">⭐明星历史</font></font></strong></h2>
+<p dir="auto"><a href="https://star-history.com/#fiatrete/OpenDAN-Personal-AI-Server-OS&amp;Date" rel="nofollow"><img src="https://camo.githubusercontent.com/cd63ec292e08fbedb5ed9aece1804462638495e1c852154590c01fef528685f7/68747470733a2f2f6170692e737461722d686973746f72792e636f6d2f7376673f7265706f733d66696174726574652f4f70656e44414e2d506572736f6e616c2d41492d5365727665722d4f5326747970653d44617465" alt="明星历史图" data-canonical-src="https://api.star-history.com/svg?repos=fiatrete/OpenDAN-Personal-AI-Server-OS&amp;type=Date" style="max-width: 100%;"></a></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-license" class="anchor" aria-hidden="true" tabindex="-1" href="#license"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">执照</font></font></strong></h2>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">当前的许可证是 MIT，但将来会过渡到 SourceDAO。</font></font></p>
+</article></div>
